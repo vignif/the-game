@@ -28,6 +28,9 @@ class Game:
         if self.num_players == 2:
             self.cards_in_hand = 7
             self.Players = [Player(self.deck, cards = self.cards_in_hand, idx = i) for i in range(self.num_players)]            
+        elif self.num_players == 1:
+            self.cards_in_hand = 8
+            self.Players = [Player(self.deck, cards = self.cards_in_hand, idx = i) for i in range(self.num_players)]
         elif self.num_players == 3:
             self.cards_in_hand = 5
             self.Players = [Player(self.deck, cards = self.cards_in_hand, idx = i) for i in range(self.num_players)]
@@ -80,6 +83,6 @@ class Game:
 
 if __name__ == "__main__":
     # players = int(input('select number of players: \n'))
-    players = 2
+    players = 1
     game = Game(players)
     game.run()

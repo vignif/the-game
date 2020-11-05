@@ -2,8 +2,8 @@ import random
 
 class Deck():
     def __init__(self):
-        self.deck1 = [i for i in range(2,100)]
-        self.maindeck = self.deck1 
+        deck = [i for i in range(2,100)]
+        self.maindeck = deck 
         random.shuffle(self.maindeck)
         
     def draw_card(self):
