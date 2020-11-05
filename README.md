@@ -1,5 +1,5 @@
 # The Game
-Python implementation of The Game by steffen benndorf
+Python implementation of The Game by Steffen Benndorf
 
 ## How to run
 Tested with Python 3.7.7
