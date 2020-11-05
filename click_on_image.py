@@ -2,27 +2,7 @@ import pygame
 from pygame.locals import *
 from pygame.color import THECOLORS as color
 import random
-
-class Deck():
-    def __init__(self):
-        deck = [i for i in range(2,100)]
-        self.maindeck = deck 
-        random.shuffle(self.maindeck)
-        
-    def draw_card(self):
-        if len(self.maindeck) == 0:
-            return 0
-        else:
-            return self.maindeck.pop()
-        
-    def shuffle_deck(self):
-        random.shuffle(self.maindeck)
-        
-    def __str__(self):
-        return str(self.maindeck)
-
-    def __len__(self):
-        return len(self.maindeck)
+from src.table import Deck, DiscardPile
 
 
 deck = Deck()
@@ -82,6 +62,7 @@ def show_cards():
     p2 = Card((WIDTH*(3/5),MARGINS/2), 1)
     p3 = Card((WIDTH*(2/5),MARGINS/2), 100)
     p4 = Card((WIDTH*(1/5),MARGINS/2), 100)
+    
     piles = [p1, p2, p3, p4]
     return cards, piles
 
@@ -92,6 +73,7 @@ pygame.display.flip() # paint screen one time
 
 running = True
 card_selected = False
+valid_play = False
 
 while running:
     for event in pygame.event.get():
@@ -106,7 +88,6 @@ while running:
                     screen.fill(background)
                     cards, piles = show_cards()
                     draw_text(f'clicked on card {card.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.6) 
-                    deck.draw_card()  
                     print(f'clicked on card {card.num}')
                     break
 
@@ -115,13 +96,19 @@ while running:
                     screen.fill(background)
                     cards, piles = show_cards()
                     card_selected.draw(pile.x, pile.y+pile.height + 10)
+                    # card_selected.clean()
                     draw_text(f'clicked on pile {pile.num}, selected card {card_selected.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.6)
                     print(f'clicked on pile {pile.num}')
                     card_selected = False
+                    valid_play = True
 
-            
+            if valid_play:
+                deck.draw_card()  
+
             draw_text(f'cards in deck {len(deck)}', myfont, (255, 255, 255), screen, 20, HEIGHT/2)
-            
+
+            valid_play = False
+
             pygame.display.update()
 
 
