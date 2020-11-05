@@ -2,6 +2,30 @@ import pygame
 from pygame.locals import *
 from pygame.color import THECOLORS as color
 import random
+
+class Deck():
+    def __init__(self):
+        deck = [i for i in range(2,100)]
+        self.maindeck = deck 
+        random.shuffle(self.maindeck)
+        
+    def draw_card(self):
+        if len(self.maindeck) == 0:
+            return 0
+        else:
+            return self.maindeck.pop()
+        
+    def shuffle_deck(self):
+        random.shuffle(self.maindeck)
+        
+    def __str__(self):
+        return str(self.maindeck)
+
+    def __len__(self):
+        return len(self.maindeck)
+
+
+deck = Deck()
 random.seed(1)
 
 pygame.init()
@@ -19,15 +43,21 @@ myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
 folder = './images/'
-class Card:
+class Card(Deck):
     def __init__(self, pos: [], num: int):
         self.x, self.y = pos
         self.num = num
         self.img = pygame.image.load(folder+str(num)+".png")
         self.img = pygame.transform.scale(self.img, card_size)
-
         self.card = self.img.get_rect().move(self.x, self.y)
         screen.blit(self.img, (self.x, self.y))
+
+def draw_text(text, font, color, surface, x, y):
+    textobj = font.render(text, 1, color)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x, y)
+    surface.blit(textobj, textrect)
+
 
 def show_cards():
     c8 = Card((WIDTH*(8/9),HEIGHT-MARGINS), 34)
@@ -54,8 +84,9 @@ pygame.display.update()
 pygame.display.flip() # paint screen one time
 
 running = True
-while running:
+card_selected = None
 
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -64,23 +95,27 @@ while running:
             x, y = event.pos
             for card in cards:
                 if card.card.collidepoint(x, y):
+                    card_selected = card.num
                     screen.fill(background)
                     cards, piles = show_cards()
-
-                    textsurface = myfont.render(f'clicked on card {card.num}', False, (255, 255, 255))
-                    screen.blit(textsurface,(0,0))
-                    pygame.display.update()
+                    draw_text(f'clicked on card {card.num}', myfont, (255, 255, 255), screen, 20, 20) 
+                    deck.draw_card()  
                     print(f'clicked on card {card.num}')
+                    break
 
             for pile in piles:
-                if pile.card.collidepoint(x,y):
+                if pile.card.collidepoint(x,y) and card_selected:
                     screen.fill(background)
                     cards, piles = show_cards()
-
-                    textsurface = myfont.render(f'clicked on pile {pile.num}', False, (255, 255, 255))
-                    screen.blit(textsurface,(0,0))
-                    pygame.display.update()
+                    
+                    draw_text(f'clicked on pile {pile.num}, selected card {card_selected}', myfont, (255, 255, 255), screen, 20, 20)
                     print(f'clicked on pile {pile.num}')
+                    card_selected = False
+
+            
+            draw_text(f'cards in deck {len(deck)}', myfont, (255, 255, 255), screen, 20, HEIGHT/2)
+            
+            pygame.display.update()
 
 
             

@@ -15,3 +15,6 @@ python /src/main.py
 - Add repeated cards
 - Add cards for The Game is on Fire
 - Attach logic to a GUI
+
+
+https://www.youtube.com/watch?v=0RryiSjpJn0
