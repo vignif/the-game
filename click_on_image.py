@@ -46,11 +46,18 @@ folder = './images/'
 class Card(Deck):
     def __init__(self, pos: [], num: int):
         self.x, self.y = pos
+        self.pos = pos
         self.num = num
         self.img = pygame.image.load(folder+str(num)+".png")
         self.img = pygame.transform.scale(self.img, card_size)
-        self.card = self.img.get_rect().move(self.x, self.y)
-        screen.blit(self.img, (self.x, self.y))
+        self.height = card_size[1]
+        self.width = card_size[0]
+        self.card = self.draw(self.x, self.y)
+
+    def draw(self, x, y):
+        card = self.img.get_rect().move(x, y)
+        screen.blit(self.img, (x, y))
+        return card
 
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
@@ -84,7 +91,7 @@ pygame.display.update()
 pygame.display.flip() # paint screen one time
 
 running = True
-card_selected = None
+card_selected = False
 
 while running:
     for event in pygame.event.get():
@@ -95,20 +102,20 @@ while running:
             x, y = event.pos
             for card in cards:
                 if card.card.collidepoint(x, y):
-                    card_selected = card.num
+                    card_selected = card
                     screen.fill(background)
                     cards, piles = show_cards()
-                    draw_text(f'clicked on card {card.num}', myfont, (255, 255, 255), screen, 20, 20) 
+                    draw_text(f'clicked on card {card.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.6) 
                     deck.draw_card()  
                     print(f'clicked on card {card.num}')
                     break
 
             for pile in piles:
-                if pile.card.collidepoint(x,y) and card_selected:
+                if pile.card.collidepoint(x,y) and card_selected.num:
                     screen.fill(background)
                     cards, piles = show_cards()
-                    
-                    draw_text(f'clicked on pile {pile.num}, selected card {card_selected}', myfont, (255, 255, 255), screen, 20, 20)
+                    card_selected.draw(pile.x, pile.y+pile.height + 10)
+                    draw_text(f'clicked on pile {pile.num}, selected card {card_selected.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.6)
                     print(f'clicked on pile {pile.num}')
                     card_selected = False
 
