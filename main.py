@@ -1,6 +1,7 @@
 import pygame
 import random
 
+folder_images = "./images/"
 
 # Card class definition
 class Card:
@@ -54,7 +55,7 @@ if __name__ == '__main__':
     pygame.display.set_caption("The Game")
 
     # Loading image for the icon
-    icon = pygame.image.load('icon.png')
+    icon = pygame.image.load(folder_images + 'icon.png')
 
     # Setting the game icon
     pygame.display.set_icon(icon)
@@ -77,7 +78,7 @@ if __name__ == '__main__':
     low_button_rect.center = (520, 400)
 
     # Load the card image
-    prev_card = pygame.image.load(r'./cards/1.png')
+    prev_card = pygame.image.load(folder_images + r'1.png')
 
     # Scale the loaded image
     prev_card = pygame.transform.scale(prev_card, (100, 160))
@@ -86,7 +87,7 @@ if __name__ == '__main__':
     current_card = random.choice(deck)
 
     # Load the card image
-    cur_card = pygame.image.load(r'./cards/' + current_card.value + '.png')
+    cur_card = pygame.image.load(folder_images + current_card.value + '.png')
 
     # Scale the loaded card image
     cur_card = pygame.transform.scale(cur_card, (100, 160))
@@ -95,7 +96,7 @@ if __name__ == '__main__':
     deck.remove(current_card)
 
     # Loading the card image
-    next_card = pygame.image.load(r'./cards/100.png')
+    next_card = pygame.image.load(folder_images + r'100.png')
 
     # Scaling the loaded image
     next_card = pygame.transform.scale(next_card, (100, 160))
@@ -147,14 +148,14 @@ if __name__ == '__main__':
                     # Change current card to previous
                     previous_card = current_card
                     prev_card = pygame.image.load(
-                        r'./cards/' + previous_card.value + '.png')
+                        folder_images + previous_card.value + '.png')
                     prev_card = pygame.transform.scale(prev_card, (100, 160))
 
                     # Set up the current card
                     current_card = random.choice(deck)
                     deck.remove(current_card)
 
-                    cur_card = pygame.image.load(r'./cards/' + current_card.value + '.png')
+                    cur_card = pygame.image.load(folder_images + current_card.value + '.png')
                     cur_card = pygame.transform.scale(cur_card, (100, 160))
 
                     # Check the result, that is, High or Low
