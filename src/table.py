@@ -1,12 +1,17 @@
 import random
+from tutorial.scenes import SceneBase
 
-class Deck():
+class Deck(SceneBase):
     def __init__(self):
+        SceneBase.__init__(self)
         deck = [i for i in range(2,100)]
         self.maindeck = deck 
         random.shuffle(self.maindeck)
         
     def draw_card(self):
+        return self.Update()
+
+    def Update(self):
         if len(self.maindeck) == 0:
             return 0
         else:
@@ -22,8 +27,9 @@ class Deck():
         return len(self.maindeck)
 
 
-class DiscardPile:
+class DiscardPile(SceneBase):
     def __init__(self, rule):
+        SceneBase.__init__(self)
         self.pile = []
         self.rule = rule
         if rule == 'inc':
@@ -31,7 +37,12 @@ class DiscardPile:
         elif rule == 'dec':
             self.pile = [100]
 
-    def insert(self, val):
+    def ProcessInput(self, events, pressed_keys):
+        """
+        how to process an input event
+        """
+
+    def Update(self, val):
         if self.rule == 'inc':
             if val > self.pile[-1] or val == self.pile[-1] - 10:
                 self.pile.append(val)

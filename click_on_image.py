@@ -32,11 +32,13 @@ class Card(Deck):
         self.img = pygame.transform.scale(self.img, card_size)
         self.height = card_size[1]
         self.width = card_size[0]
-        self.card = self.draw(self.x, self.y)
+        self.card = self.draw()
 
-    def draw(self, x, y):
-        card = self.img.get_rect().move(x, y)
-        screen.blit(self.img, (x, y))
+    def draw(self, *args):
+        if args:
+            self.x, self.y = args
+        card = self.img.get_rect().move(self.x, self.y)
+        screen.blit(self.img, (self.x, self.y))
         return card
 
 def draw_text(text, font, color, surface, x, y):
@@ -46,15 +48,15 @@ def draw_text(text, font, color, surface, x, y):
     surface.blit(textobj, textrect)
 
 
-def show_cards():
-    c8 = Card((WIDTH*(8/9),HEIGHT-MARGINS), 34)
-    c7 = Card((WIDTH*(7/9),HEIGHT-MARGINS), 81)
-    c6 = Card((WIDTH*(6/9),HEIGHT-MARGINS), 23)
-    c5 = Card((WIDTH*(5/9),HEIGHT-MARGINS), 2)
-    c4 = Card((WIDTH*(4/9),HEIGHT-MARGINS), 99)
-    c3 = Card((WIDTH*(3/9),HEIGHT-MARGINS), 19)
-    c2 = Card((WIDTH*(2/9),HEIGHT-MARGINS), 15)
-    c1 = Card((WIDTH*(1/9),HEIGHT-MARGINS), 45)
+def init_cards():
+    c8 = Card((WIDTH*(8/9),HEIGHT-MARGINS), deck.draw_card())
+    c7 = Card((WIDTH*(7/9),HEIGHT-MARGINS), deck.draw_card())
+    c6 = Card((WIDTH*(6/9),HEIGHT-MARGINS), deck.draw_card())
+    c5 = Card((WIDTH*(5/9),HEIGHT-MARGINS), deck.draw_card())
+    c4 = Card((WIDTH*(4/9),HEIGHT-MARGINS), deck.draw_card())
+    c3 = Card((WIDTH*(3/9),HEIGHT-MARGINS), deck.draw_card())
+    c2 = Card((WIDTH*(2/9),HEIGHT-MARGINS), deck.draw_card())
+    c1 = Card((WIDTH*(1/9),HEIGHT-MARGINS), deck.draw_card())
 
     cards = [c1, c2, c3, c4, c5, c6, c7, c8]
 
@@ -66,8 +68,7 @@ def show_cards():
     piles = [p1, p2, p3, p4]
     return cards, piles
 
-
-cards, piles = show_cards()
+cards, piles = init_cards()
 pygame.display.update()
 pygame.display.flip() # paint screen one time
 
@@ -80,21 +81,20 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
+            screen.fill(background)
+            [card.draw() for card in cards]
+            [pile.draw() for pile in piles]
             # Set the x, y positions of the mouse click
             x, y = event.pos
             for card in cards:
                 if card.card.collidepoint(x, y):
                     card_selected = card
-                    screen.fill(background)
-                    cards, piles = show_cards()
                     draw_text(f'clicked on card {card.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.6) 
                     print(f'clicked on card {card.num}')
                     break
 
             for pile in piles:
                 if pile.card.collidepoint(x,y) and card_selected.num:
-                    screen.fill(background)
-                    cards, piles = show_cards()
                     card_selected.draw(pile.x, pile.y+pile.height + 10)
                     # card_selected.clean()
                     draw_text(f'clicked on pile {pile.num}, selected card {card_selected.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.6)
