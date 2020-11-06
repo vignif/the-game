@@ -11,9 +11,9 @@ random.seed(1)
 pygame.init()
 WIDTH=500
 HEIGHT=600
-MARGIN = 80
+MARGIN = 60
 
-card_size = (70, 100)
+card_size = (50, 70)
 
 screen = pygame.display.set_mode( (WIDTH, HEIGHT ) )
 pygame.display.set_caption('The Game')
@@ -25,6 +25,7 @@ myfont = pygame.font.SysFont('Comic Sans MS', 30)
 folder = './images/'
 class Card(Deck):
     def __init__(self, pos: [], num: int):
+        Deck.__init__(self)
         self.x, self.y = pos
         self.pos = pos
         self.num = num
@@ -52,18 +53,20 @@ def draw_text(text, font, color, surface, x, y):
     surface.blit(textobj, textrect)
 
 
-def init_hand():
-    c1 = Card((MARGIN, HEIGHT-card_size[1] - 20 ), deck.draw_card())
+def init_hand(pos, num_of_cards):
+    c1 = Card(pos, deck.draw_card())
     c2 = Card((c1.x + MARGIN, c1.y), deck.draw_card())
     c3 = Card((c2.x + MARGIN, c2.y), deck.draw_card())
     c4 = Card((c3.x + MARGIN, c3.y), deck.draw_card())
     c5 = Card((c4.x + MARGIN, c4.y), deck.draw_card())
 
     cards = [c1, c2, c3, c4, c5]
-
     return cards
 
-cards = init_hand()
+pos = [MARGIN, HEIGHT-card_size[1] - 20 ]
+num_of_cards = 8
+
+cards = init_hand(pos, num_of_cards)
 pygame.display.update()
 pygame.display.flip() # paint screen one time
 
