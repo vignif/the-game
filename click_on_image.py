@@ -81,9 +81,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            screen.fill(background)
-            [card.draw() for card in cards]
-            [pile.draw() for pile in piles]
+
             # Set the x, y positions of the mouse click
             x, y = event.pos
             for card in cards:
@@ -96,7 +94,6 @@ while running:
             for pile in piles:
                 if pile.card.collidepoint(x,y) and card_selected.num:
                     card_selected.draw(pile.x, pile.y+pile.height + 10)
-                    # card_selected.clean()
                     draw_text(f'clicked on pile {pile.num}, selected card {card_selected.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.6)
                     print(f'clicked on pile {pile.num}')
                     card_selected = False
@@ -104,9 +101,11 @@ while running:
 
             if valid_play:
                 deck.draw_card()  
-
+            
+            # render
             draw_text(f'cards in deck {len(deck)}', myfont, (255, 255, 255), screen, 20, HEIGHT/2)
-
+            [card.draw() for card in cards]
+            [pile.draw() for pile in piles]
             valid_play = False
 
             pygame.display.update()
