@@ -5,8 +5,9 @@ class Deck(SceneBase):
     def __init__(self):
         SceneBase.__init__(self)
         deck = [i for i in range(2,100)]
-        self.maindeck = deck 
-        random.shuffle(self.maindeck)
+        self.maindeck = deck
+        self.maindeck.sort(reverse=True)
+        # random.shuffle(self.maindeck)
         
     def draw_card(self):
         return self.Update()
