@@ -11,9 +11,9 @@ random.seed(1)
 pygame.init()
 WIDTH=500
 HEIGHT=600
-MARGINS = 120
+MARGIN = 80
 
-card_size = (100, 150)
+card_size = (70, 100)
 
 screen = pygame.display.set_mode( (WIDTH, HEIGHT ) )
 pygame.display.set_caption('The Game')
@@ -52,16 +52,18 @@ def draw_text(text, font, color, surface, x, y):
     surface.blit(textobj, textrect)
 
 
-def init_cards():
-    c1 = Card((WIDTH/2,HEIGHT/2), deck.draw_card())
-    c2 = Card((WIDTH/2+ 110,HEIGHT/2), deck.draw_card())
-    c3 = Card((WIDTH/2- 110,HEIGHT/2), deck.draw_card())
+def init_hand():
+    c1 = Card((MARGIN, HEIGHT-card_size[1] - 20 ), deck.draw_card())
+    c2 = Card((c1.x + MARGIN, c1.y), deck.draw_card())
+    c3 = Card((c2.x + MARGIN, c2.y), deck.draw_card())
+    c4 = Card((c3.x + MARGIN, c3.y), deck.draw_card())
+    c5 = Card((c4.x + MARGIN, c4.y), deck.draw_card())
 
-    cards = [c1, c2, c3]
+    cards = [c1, c2, c3, c4, c5]
 
     return cards
 
-cards = init_cards()
+cards = init_hand()
 pygame.display.update()
 pygame.display.flip() # paint screen one time
 
@@ -79,7 +81,7 @@ while running:
             else:
                 #mouse not hovering card
                 pass
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT or deck.is_empty:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             screen.fill(background)
@@ -91,7 +93,7 @@ while running:
                     pos_old = card.pos
                     draw_text(f'clicked on card {card.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.2)
                     idx = cards.index(card)
-                    print(f'clicked on card {card.num} at index {idx}')
+                    #print(f'clicked on card {card.num} at index {idx}')
                     valid_play = True
                     break
 
@@ -101,7 +103,6 @@ while running:
                 cards.append(Card(pos_old, deck.draw_card()))  
             
             # render
-            
             draw_text(f'cards in deck {len(deck)}', myfont, (255, 255, 255), screen, 20, HEIGHT*0.4)
             [card.draw() for card in cards]
             valid_play = False

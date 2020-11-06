@@ -11,16 +11,19 @@ class Deck(SceneBase):
         
     def draw_card(self):
         return self.Update()
+    
+    @property
+    def is_empty(self):
+        return True if len(self) == 0 else False
 
+    def shuffle_deck(self):
+        random.shuffle(self.maindeck)
+        
     def Update(self):
         if len(self.maindeck) == 0:
             return 0
         else:
             return self.maindeck.pop()
-        
-    def shuffle_deck(self):
-        random.shuffle(self.maindeck)
-        
     def __str__(self):
         return str(self.maindeck)
 
