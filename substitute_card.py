@@ -136,20 +136,28 @@ while running:
             for card in cards:
                 if card.card.collidepoint(x, y):
                     card_selected = card
-                    draw_text(f'clicked on card {card.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.2)
+                    draw_text(f'clicked on card {card.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.5)
                     #print(f'clicked on card {card.num} at index {idx}')
-                    valid_play = True
                     break
+
+            for pile in pilehand.cards:
+                if pile.card.collidepoint(x,y):
+                    card_selected.draw(pile.x, pile.y+pile.height + 10)
+                    draw_text(f'clicked on pile {pile.num}, selected card {card_selected.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.6)
+                    print(f'clicked on pile {pile.num}')
+                    valid_play = True
 
             if valid_play:
                 hand.remove(card_selected)
                 hand.insert()
+                card_selected = False
             
             # render
             draw_text(f'cards in deck {len(deck)}', myfont, (255, 255, 255), screen, 20, HEIGHT*0.4)
             [card.draw() for card in cards]
-
-            valid_play = False
+            [pilecard.draw() for pilecard in pilehand.cards]
+            valid_play = False  
+            
             pygame.display.update()
 
 
