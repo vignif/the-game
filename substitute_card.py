@@ -40,10 +40,6 @@ class Card(Deck):
         card = self.img.get_rect().move(self.x, self.y)
         screen.blit(self.img, (self.x, self.y))
         return card
-    
-    def remove(self):
-        self.img = None
-
 
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
@@ -60,6 +56,15 @@ class Hand:
         self.cards = [Card(self.pos_first_card, self.deck)]
         for i in range(num_of_cards-1):
             self.cards.append(Card((self.cards[i].x + MARGIN, self.cards[i].y), self.deck))
+    
+    def remove(self, card):
+        self.pos_old = card.pos
+        idx = self.cards.index(card)
+        self.cards.pop(idx)
+
+    def insert(self):
+        self.cards.append(Card(self.pos_old, deck))  
+
 
 print('')
 
@@ -94,17 +99,14 @@ while running:
             for card in cards:
                 if card.card.collidepoint(x, y):
                     card_selected = card
-                    pos_old = card.pos
                     draw_text(f'clicked on card {card.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.2)
-                    idx = cards.index(card)
                     #print(f'clicked on card {card.num} at index {idx}')
                     valid_play = True
                     break
 
             if valid_play:
-                card_selected.remove()
-                cards.pop(idx)
-                cards.append(Card(pos_old, deck))  
+                hand.remove(card_selected)
+                hand.insert()
             
             # render
             draw_text(f'cards in deck {len(deck)}', myfont, (255, 255, 255), screen, 20, HEIGHT*0.4)
