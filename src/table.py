@@ -1,5 +1,6 @@
 import random
 from tutorial.scenes import SceneBase
+random.seed(1)
 
 class Deck(SceneBase):
     def __init__(self):

@@ -94,19 +94,28 @@ class PileCard(Deck):
         return card
 
     def insert(self, val):
-        if self.num == 1 or val > self.value:
-            self.value = val
-            print("increase ", self.num)        
-        elif self.num == 100 or val < self.value:
-            self.value = val
-            print("decrease ", self.num)        
+        if self.num == 1:
+            if val > self.value:
+                self.value = val
+                print("increase ", self.num)
+            else:
+                print("Can't do it")        
+        elif self.num == 100:
+            if val < self.value:
+                self.value = val
+                print("decrease ", self.num)
+            else:
+                print("Can't do it")        
+
+    def __str__(self):
+        return f'Pile {self.num} current val {self.value}'
 
         
 
 class PileHand:
     def __init__(self,deck):
         self.deck = deck
-        self.pos_first_card = [MARGIN, 20 ]
+        self.pos_first_card = [MARGIN*2.5, 20 ]
         self.cards = [PileCard(self.pos_first_card, deck)]
         for i in range(len(self.deck)):
             self.cards.append(PileCard((self.cards[i].x + MARGIN, self.cards[i].y), deck))
@@ -176,7 +185,7 @@ while running:
             [card.draw() for card in cards]
             [pilecard.draw() for pilecard in pilehand.cards]
             [disc.draw() for disc in discardedcards]
-            
+            [print(pile) for pile in pilehand.cards]
             pygame.display.update()
 
 
