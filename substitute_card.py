@@ -61,23 +61,12 @@ class Hand:
         for i in range(num_of_cards-1):
             self.cards.append(Card((self.cards[i].x + MARGIN, self.cards[i].y), self.deck))
 
-hand = Hand(deck, 8)
 print('')
 
-def init_hand(pos, num_of_cards):
-    c1 = Card(pos, deck)
-    c2 = Card((c1.x + MARGIN, c1.y), deck)
-    c3 = Card((c2.x + MARGIN, c2.y), deck)
-    c4 = Card((c3.x + MARGIN, c3.y), deck)
-    c5 = Card((c4.x + MARGIN, c4.y), deck)
 
-    cards = [c1, c2, c3, c4, c5]
-    return cards
-
-pos = [MARGIN, HEIGHT-card_size[1] - 20 ]
 num_of_cards = 8
+hand = Hand(deck, num_of_cards)
 
-# cards = init_hand(pos, num_of_cards)
 cards = hand.cards
 pygame.display.update()
 pygame.display.flip() # paint screen one time
