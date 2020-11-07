@@ -9,7 +9,7 @@ deck = Deck()
 random.seed(1)
 
 pygame.init()
-WIDTH=500
+WIDTH=600
 HEIGHT=600
 MARGIN = 60
 
@@ -24,12 +24,11 @@ myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 folder = './images/'
 class Card(Deck):
-    def __init__(self, pos: [], num: int):
-        Deck.__init__(self)
+    def __init__(self, pos: [], deck):
         self.x, self.y = pos
         self.pos = pos
-        self.num = num
-        self.img = pygame.image.load(folder+str(num)+".png")
+        self.num = deck.draw_card()
+        self.img = pygame.image.load(folder+str(self.num)+".png")
         self.img = pygame.transform.scale(self.img, card_size)
         self.height = card_size[1]
         self.width = card_size[0]
@@ -53,12 +52,24 @@ def draw_text(text, font, color, surface, x, y):
     surface.blit(textobj, textrect)
 
 
+class Hand:
+    def __init__(self, deck, num_of_cards):
+        self.deck = deck
+        self.num = num_of_cards
+        self.pos_first_card = [MARGIN, HEIGHT-card_size[1] - 20 ]
+        self.cards = [Card(self.pos_first_card, self.deck)]
+        for i in range(num_of_cards-1):
+            self.cards.append(Card((self.cards[i].x + MARGIN, self.cards[i].y), self.deck))
+
+hand = Hand(deck, 8)
+print('')
+
 def init_hand(pos, num_of_cards):
-    c1 = Card(pos, deck.draw_card())
-    c2 = Card((c1.x + MARGIN, c1.y), deck.draw_card())
-    c3 = Card((c2.x + MARGIN, c2.y), deck.draw_card())
-    c4 = Card((c3.x + MARGIN, c3.y), deck.draw_card())
-    c5 = Card((c4.x + MARGIN, c4.y), deck.draw_card())
+    c1 = Card(pos, deck)
+    c2 = Card((c1.x + MARGIN, c1.y), deck)
+    c3 = Card((c2.x + MARGIN, c2.y), deck)
+    c4 = Card((c3.x + MARGIN, c3.y), deck)
+    c5 = Card((c4.x + MARGIN, c4.y), deck)
 
     cards = [c1, c2, c3, c4, c5]
     return cards
@@ -66,7 +77,8 @@ def init_hand(pos, num_of_cards):
 pos = [MARGIN, HEIGHT-card_size[1] - 20 ]
 num_of_cards = 8
 
-cards = init_hand(pos, num_of_cards)
+# cards = init_hand(pos, num_of_cards)
+cards = hand.cards
 pygame.display.update()
 pygame.display.flip() # paint screen one time
 
@@ -103,7 +115,7 @@ while running:
             if valid_play:
                 card_selected.remove()
                 cards.pop(idx)
-                cards.append(Card(pos_old, deck.draw_card()))  
+                cards.append(Card(pos_old, deck))  
             
             # render
             draw_text(f'cards in deck {len(deck)}', myfont, (255, 255, 255), screen, 20, HEIGHT*0.4)
