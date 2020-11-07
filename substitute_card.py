@@ -2,10 +2,12 @@ import pygame
 from pygame.locals import *
 from pygame.color import THECOLORS as color
 import random
-from src.table import Deck, DiscardPile
+from src.table import Deck, DiscardPile, PileDeck
 
 
 deck = Deck()
+piledeck = PileDeck()
+
 random.seed(1)
 
 pygame.init()
@@ -21,8 +23,11 @@ background = pygame.Color("darkgreen")
 screen.fill(background)
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
-
 folder = './images/'
+
+
+
+
 class Card(Deck):
     def __init__(self, pos: [], deck):
         self.x, self.y = pos
@@ -40,6 +45,7 @@ class Card(Deck):
         card = self.img.get_rect().move(self.x, self.y)
         screen.blit(self.img, (self.x, self.y))
         return card
+
 
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
@@ -66,7 +72,38 @@ class Hand:
         self.cards.append(Card(self.pos_old, deck))  
 
 
-print('')
+class PileCard(Deck):
+    def __init__(self, pos: [], piledeck):
+        self.x, self.y = pos
+        self.pos = pos
+
+        self.num = piledeck.draw_card()
+
+        self.img = pygame.image.load(folder+str(self.num)+".png")
+        self.img = pygame.transform.scale(self.img, card_size)
+        self.height = card_size[1]
+        self.width = card_size[0]
+        self.card = self.draw()
+
+    def draw(self, *args):
+        if args:
+            self.x, self.y = args
+        card = self.img.get_rect().move(self.x, self.y)
+        screen.blit(self.img, (self.x, self.y))
+        return card
+
+
+
+class PileHand:
+    def __init__(self,deck):
+        self.deck = deck
+        self.pos_first_card = [MARGIN, 20 ]
+        self.cards = [PileCard(self.pos_first_card, deck)]
+        for i in range(len(self.deck)):
+            self.cards.append(PileCard((self.cards[i].x + MARGIN, self.cards[i].y), deck))
+
+
+pilehand = PileHand(piledeck)
 
 
 num_of_cards = 8
@@ -111,6 +148,7 @@ while running:
             # render
             draw_text(f'cards in deck {len(deck)}', myfont, (255, 255, 255), screen, 20, HEIGHT*0.4)
             [card.draw() for card in cards]
+
             valid_play = False
             pygame.display.update()
 

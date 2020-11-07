@@ -1,6 +1,5 @@
 import pygame
 from menu import *
-from click_on_image import Card
 
 
 class Game():
