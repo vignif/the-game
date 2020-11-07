@@ -76,8 +76,9 @@ class PileCard(Deck):
     def __init__(self, pos: [], piledeck):
         self.x, self.y = pos
         self.pos = pos
-
         self.num = piledeck.draw_card()
+        
+        self.value = self.num
 
         self.img = pygame.image.load(folder+str(self.num)+".png")
         self.img = pygame.transform.scale(self.img, card_size)
@@ -92,7 +93,15 @@ class PileCard(Deck):
         screen.blit(self.img, (self.x, self.y))
         return card
 
+    def insert(self, val):
+        if self.num == 1 or val > self.value:
+            self.value = val
+            print("increase ", self.num)        
+        elif self.num == 100 or val < self.value:
+            self.value = val
+            print("decrease ", self.num)        
 
+        
 
 class PileHand:
     def __init__(self,deck):
@@ -119,6 +128,10 @@ valid_play = False
 
 discardedcards = []
 
+def logic(pile, card_selected):
+    print(card_selected.num)
+    pile.insert(card_selected.num)
+    print('')
 
 while running:
     mouse = pygame.mouse.get_pos()
@@ -145,6 +158,7 @@ while running:
 
             for pile in pilehand.cards:
                 if pile.card.collidepoint(x,y):
+                    logic(pile, card_selected)
                     discardedcards.append(card_selected)
                     card_selected.draw(pile.x, pile.y+pile.height + 10)
                     draw_text(f'clicked on pile {pile.num}, selected card {card_selected.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.6)
