@@ -117,6 +117,9 @@ running = True
 card_selected = False
 valid_play = False
 
+discardedcards = []
+
+
 while running:
     mouse = pygame.mouse.get_pos()
     for event in pygame.event.get():
@@ -142,6 +145,7 @@ while running:
 
             for pile in pilehand.cards:
                 if pile.card.collidepoint(x,y):
+                    discardedcards.append(card_selected)
                     card_selected.draw(pile.x, pile.y+pile.height + 10)
                     draw_text(f'clicked on pile {pile.num}, selected card {card_selected.num}', myfont, (255, 255, 255), screen, 20, HEIGHT * 0.6)
                     print(f'clicked on pile {pile.num}')
@@ -154,9 +158,10 @@ while running:
             
             # render
             draw_text(f'cards in deck {len(deck)}', myfont, (255, 255, 255), screen, 20, HEIGHT*0.4)
+            valid_play = False  
             [card.draw() for card in cards]
             [pilecard.draw() for pilecard in pilehand.cards]
-            valid_play = False  
+            [disc.draw() for disc in discardedcards]
             
             pygame.display.update()
 
