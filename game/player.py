@@ -114,12 +114,13 @@ class Hand:
         self.cards = []
         self.active_card = None
         self.give_cards()
+        self.first_pos = [MARGIN, HEIGHT - Card.card_size[1] - 20]
     
     def clicked_on(self, card):        
         [i.click() for i in self.cards if i.active==True]
-        card.click()        
+        card.click()
+        self.active_card = [i for i in self.cards if i.active == True]        
         
-
     def give_cards(self):
         for i in range(self.num):
             self.cards.append(self.deck.draw_card())
@@ -133,7 +134,7 @@ class Hand:
         self.cards.append(self.deck.draw_card())  
 
     def set_positions(self):
-        self.cards[0].set_pos([MARGIN, HEIGHT - Card.card_size[1] - 20])
+        self.cards[0].set_pos(self.first_pos)
         for i in range(self.num-1):
             self.cards[i+1].set_pos([self.cards[i].x + MARGIN, self.cards[i].y])
 
@@ -148,12 +149,44 @@ class Hand:
         return ''
 
 
+class Pile(Card):
+    def __init__(self, rule: str):
+        self.active = False
+        if rule == 'inc':
+            self.num = 1
+        elif rule == 'dec':
+            self.num = 100
+        else:
+            print(f'Error')
+
+        self.rule = rule
+        self.cards = None
+
+    def insert(self, card):
+        self.cards.append(card)
+
+
+class Piles(Hand):
+    def __init__(self, deck):
+        rules = ['inc','inc','dec','dec']
+        self.num = len(rules)
+        self.deck = deck
+        self.cards = []
+        for rule in rules:
+            self.cards.append(Pile(rule))
+        self.first_pos = [MARGIN, 20]
+
+
 if __name__ == "__main__":
     import time
 
     deck = Deck(randomize=False)
     hand = Hand(deck, 8)
     hand.show()
+
+    piles = Piles(deck)
+    piles.show()
+
     pygame.display.update()
     # pygame.display.flip() # paint screen one time
 
@@ -166,6 +199,11 @@ if __name__ == "__main__":
                         # print(f'clicked on card {card.num}')
                         hand.clicked_on(card)
                         # print(card)
+
+                for pile in piles.cards:
+                    if pile.collidepoint(x, y):
+                        print(f'clicked on card {pile.num}')
+                        piles.clicked_on(pile)
                 print(hand)
 
 
