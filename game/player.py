@@ -119,7 +119,7 @@ class Hand:
     def clicked_on(self, card):        
         [i.click() for i in self.cards if i.active==True]
         card.click()
-        self.active_card = [i for i in self.cards if i.active == True]        
+        self.active_card = [i for i in self.cards if i.active == True][0]     
         
     def give_cards(self):
         for i in range(self.num):
@@ -160,7 +160,7 @@ class Pile(Card):
             print(f'Error')
 
         self.rule = rule
-        self.cards = None
+        self.cards = []
 
     def insert(self, card):
         self.cards.append(card)
@@ -176,6 +176,12 @@ class Piles(Hand):
             self.cards.append(Pile(rule))
         self.first_pos = [MARGIN, 20]
 
+def logic(pile, hand):
+    if pile.num == 1:
+        pile.insert(hand.active_card)
+        # remove the card from the hand
+        # draw from the deck a new card in the hand
+    return pile, hand
 
 if __name__ == "__main__":
     import time
@@ -202,13 +208,26 @@ if __name__ == "__main__":
 
                 for pile in piles.cards:
                     if pile.collidepoint(x, y):
-                        print(f'clicked on card {pile.num}')
+                        # print(f'clicked on {pile.__class__.__name__} {pile.num}')
                         piles.clicked_on(pile)
-                print(hand)
+                        # print(pile)
+
+                        if hand.active_card:
+                            print(f'card {hand.active_card.num} on pile {piles.active_card.num}')
+                            logic(pile, hand)
+                            # append card to cards[] in pile
+                            # the hand is drawing a new card from the deck
+
+                # print(hand)
+                # update graphic
+                piles.show()
+                hand.show()
+                pygame.display.update()
+
+
 
 
     
-    time.sleep(2)
     print('')
     #loop over, quite pygame
     pygame.quit()
