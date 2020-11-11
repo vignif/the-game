@@ -144,6 +144,13 @@ class Hand:
         self.set_positions()
         for card in self.cards:
             card.draw()
+    
+    def replace(self):
+        idx = self.cards.index(self.active_card)
+        old_pos = self.cards[idx].pos
+        self.cards[idx] = self.deck.draw_card()
+        self.cards[idx].set_pos(old_pos)
+        return self
 
     def __str__(self):
         for card in self.cards:
@@ -163,9 +170,11 @@ class Pile(Card):
 
         self.rule = rule
         self.cards = []
+        self.value = self.num
 
     def insert(self, card):
         self.cards.append(card)
+        self.value = card.num
 
     def draw(self):
         Card.draw(self)
@@ -188,15 +197,22 @@ class Piles(Hand):
         self.first_pos = [MARGIN, 20]
 
 def logic(pile, hand):
+    valid = False
     if pile.num == 1:
         # logic for pile 1
-        pass
+        if hand.active_card.num > pile.value or hand.active_card.num == pile.value - 10:
+            pile.insert(hand.active_card)   
+            valid = True
     elif pile.num == 100:
         # logic for pile 100
-        pass
-    pile.insert(hand.active_card)
-        # remove the card from the hand
-        # draw from the deck a new card in the hand
+        if hand.active_card.num < pile.value or hand.active_card.num == pile.value + 10:
+            pile.insert(hand.active_card)  
+            valid = True
+        
+    # insert card in choosen pile
+    # draw from the deck a new card in the hand
+    if valid:
+        hand.replace()
     return pile, hand
 
 if __name__ == "__main__":
@@ -232,6 +248,7 @@ if __name__ == "__main__":
                         if hand.active_card:
                             # print(f'card {hand.active_card.num} on pile {piles.active_card.num}')
                             logic(pile, hand)
+                            # hand.remove(hand.active_card)
                             # append card to cards[] in pile
                             # the hand is drawing a new card from the deck
 
