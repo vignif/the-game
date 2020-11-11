@@ -68,6 +68,8 @@ class Card:
     def __str__(self):
         return f'Card {self.num}, active {self.active}'
 
+    def __repr__(self):
+        return '{0}'.format(self.num)
 
 
 
@@ -165,6 +167,15 @@ class Pile(Card):
     def insert(self, card):
         self.cards.append(card)
 
+    def draw(self):
+        Card.draw(self)
+        if self.cards:
+            self.cards[-1].set_pos([self.x, self.y + Card.card_size[1] + 20])
+            self.cards[-1].draw()
+
+    def __str__(self):
+        return f'Pile {self.num} contains {self.cards}'
+
 
 class Piles(Hand):
     def __init__(self, deck):
@@ -178,7 +189,12 @@ class Piles(Hand):
 
 def logic(pile, hand):
     if pile.num == 1:
-        pile.insert(hand.active_card)
+        # logic for pile 1
+        pass
+    elif pile.num == 100:
+        # logic for pile 100
+        pass
+    pile.insert(hand.active_card)
         # remove the card from the hand
         # draw from the deck a new card in the hand
     return pile, hand
@@ -193,6 +209,7 @@ if __name__ == "__main__":
     piles = Piles(deck)
     piles.show()
 
+    clock = pygame.time.Clock()
     pygame.display.update()
     # pygame.display.flip() # paint screen one time
 
@@ -213,21 +230,23 @@ if __name__ == "__main__":
                         # print(pile)
 
                         if hand.active_card:
-                            print(f'card {hand.active_card.num} on pile {piles.active_card.num}')
+                            # print(f'card {hand.active_card.num} on pile {piles.active_card.num}')
                             logic(pile, hand)
                             # append card to cards[] in pile
                             # the hand is drawing a new card from the deck
 
-                # print(hand)
+                print(piles)
                 # update graphic
+                print('')
                 piles.show()
                 hand.show()
                 pygame.display.update()
+                clock.tick(60)
 
 
 
 
     
-    print('')
+    # print('')
     #loop over, quite pygame
     pygame.quit()
