@@ -1,6 +1,8 @@
 # The Game
 Python implementation of The Game by Steffen Benndorf
 
+![img](utils/UML.png)
+
 ## How to run
 Tested with Python 3.7.7
 
@@ -17,4 +19,6 @@ python /src/main.py
 - Attach logic to a GUI
 
 
-https://www.youtube.com/watch?v=0RryiSjpJn0
+
+
+ pyreverse <script> -o diagram.png
