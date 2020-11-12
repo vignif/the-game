@@ -17,7 +17,7 @@ screen.fill(background)
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
-folder = './images/'
+folder = '../images/'
 
 class Card:
     """
@@ -29,7 +29,7 @@ class Card:
     
     card_size = (50, 70)
 
-    def __init__(self, num):
+    def __init__(self, num: int):
         self.num = num
         self.active = False
         self.pos = [0, 0]
