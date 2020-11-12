@@ -1,7 +1,7 @@
 import pygame
 import random
 
-random.seed(1)
+random.seed(2)
 
 WIDTH=600
 HEIGHT=600
@@ -196,6 +196,9 @@ class Piles(Hand):
             self.cards.append(Pile(rule))
         self.first_pos = [MARGIN, 20]
 
+def check_remaining_moves(piles, hand):
+    pass
+
 def logic(pile, hand):
     valid = False
     if pile.num == 1:
@@ -218,7 +221,7 @@ def logic(pile, hand):
 if __name__ == "__main__":
     import time
 
-    deck = Deck(randomize=False)
+    deck = Deck(randomize=True)
     hand = Hand(deck, 8)
     hand.show()
 
@@ -252,7 +255,8 @@ if __name__ == "__main__":
                             # append card to cards[] in pile
                             # the hand is drawing a new card from the deck
 
-                print(piles)
+                # print(piles)
+                print(len(deck))
                 # update graphic
                 print('')
                 piles.show()
