@@ -196,21 +196,39 @@ class Piles(Hand):
             self.cards.append(Pile(rule))
         self.first_pos = [MARGIN, 20]
 
-def check_remaining_moves(piles, hand):
+
+def check_pile_1(pile, card_hand):
+    if card_hand.num > pile.value or card_hand.num == pile.value - 10:
+        return True
+    else:
+        return False
+
+
+def check_pile_100(pile, card_hand):
+    if card_hand.num < pile.value or card_hand.num == pile.value + 10:
+        return True
+    else:
+        return False
+
+
+def check_available_moves(piles, hand):
     pass
 
-def logic(pile, hand):
+
+def logic(pile, hand_card, insert: bool):
     valid = False
     if pile.num == 1:
         # logic for pile 1
-        if hand.active_card.num > pile.value or hand.active_card.num == pile.value - 10:
-            pile.insert(hand.active_card)   
+        if check_pile_1(pile, hand_card):
+            if insert == True:
+                pile.insert(hand_card)   
             valid = True
     elif pile.num == 100:
         # logic for pile 100
-        if hand.active_card.num < pile.value or hand.active_card.num == pile.value + 10:
-            pile.insert(hand.active_card)  
-            valid = True
+        if check_pile_100(pile, hand_card):
+            if insert == True:
+                pile.insert(hand_card)  
+            valid = True    
         
     # insert card in choosen pile
     # draw from the deck a new card in the hand
@@ -218,10 +236,11 @@ def logic(pile, hand):
         hand.replace()
     return pile, hand
 
+
 if __name__ == "__main__":
     import time
 
-    deck = Deck(randomize=True)
+    deck = Deck(randomize=False)
     hand = Hand(deck, 8)
     hand.show()
 
@@ -230,7 +249,6 @@ if __name__ == "__main__":
 
     clock = pygame.time.Clock()
     pygame.display.update()
-    # pygame.display.flip() # paint screen one time
 
     while True:
         for event in pygame.event.get():
@@ -238,25 +256,17 @@ if __name__ == "__main__":
                 x, y = event.pos
                 for card in hand.cards:
                     if card.collidepoint(x,y):
-                        # print(f'clicked on card {card.num}')
+                        # select a card from the hand
                         hand.clicked_on(card)
-                        # print(card)
 
                 for pile in piles.cards:
                     if pile.collidepoint(x, y):
-                        # print(f'clicked on {pile.__class__.__name__} {pile.num}')
+                        # select a card from the piles
                         piles.clicked_on(pile)
-                        # print(pile)
-
                         if hand.active_card:
-                            # print(f'card {hand.active_card.num} on pile {piles.active_card.num}')
-                            logic(pile, hand)
-                            # hand.remove(hand.active_card)
-                            # append card to cards[] in pile
-                            # the hand is drawing a new card from the deck
-
+                            # valid game
+                            logic(pile, hand.active_card, insert=True)
                 # print(piles)
-                print(len(deck))
                 # update graphic
                 print('')
                 piles.show()
@@ -265,9 +275,4 @@ if __name__ == "__main__":
                 clock.tick(60)
 
 
-
-
-    
-    # print('')
-    #loop over, quite pygame
     pygame.quit()
