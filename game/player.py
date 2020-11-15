@@ -1,23 +1,6 @@
 import pygame
 import random
 
-random.seed(2)
-
-WIDTH=600
-HEIGHT=600
-MARGIN = 60
-
-pygame.init()
-
-
-screen = pygame.display.set_mode( (WIDTH, HEIGHT ) )
-pygame.display.set_caption('The Game')
-background = pygame.Color("darkgreen")
-screen.fill(background)
-myfont = pygame.font.SysFont('Comic Sans MS', 30)
-
-
-folder = '../images/'
 
 class Card:
     """
@@ -239,6 +222,27 @@ def logic(pile, hand_card, insert: bool):
 
 if __name__ == "__main__":
     import time
+    import random
+    import sys
+    sys.path.insert(1, '.')
+    folder = './images/'
+
+
+    random.seed(2)
+
+    WIDTH=600
+    HEIGHT=600
+    MARGIN = 60
+
+    pygame.init()
+
+
+    screen = pygame.display.set_mode( (WIDTH, HEIGHT ) )
+    pygame.display.set_caption('The Game')
+    background = pygame.Color("darkgreen")
+    screen.fill(background)
+    myfont = pygame.font.SysFont('Comic Sans MS', 30)
+
 
     deck = Deck(randomize=False)
     hand = Hand(deck, 8)
