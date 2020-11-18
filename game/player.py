@@ -226,3 +226,9 @@ def logic(pile, hand, insert: bool):
 def copyright():
     textsurface = italic.render('Francesco Vigni - 2020', True, (255, 255, 255))
     screen.blit(textsurface,(5,HEIGHT-25))
+
+def cards_in_deck(deck):
+    l = len(deck)
+    textsurface = italic.render("{0}".format(l), True, (255, 255, 255))
+    screen.blit(textsurface,(5,HEIGHT/2))
+

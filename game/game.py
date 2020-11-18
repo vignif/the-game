@@ -2,7 +2,7 @@ import time
 import random
 import sys
 import pygame
-from game.player import Deck, Hand, Piles, logic, copyright
+from game.player import Deck, Hand, Piles, logic, copyright, cards_in_deck
 from game.constants import *
 sys.path.insert(1, '.')
 
@@ -41,6 +41,8 @@ class Game:
                                 # valid game
                                 logic(pile, self.hand, insert=True)
                     # update graphic
+                    screen.fill(background)
+                    cards_in_deck(self.deck)
                     self.piles.show()
                     self.hand.show()
                     copyright()
