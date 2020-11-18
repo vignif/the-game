@@ -7,10 +7,9 @@ from game.constants import *
 sys.path.insert(1, '.')
 
 
-random.seed(2)
 
 class Game:
-    deck = Deck(randomize=False)
+    deck = Deck(randomize=True)
     hand = Hand(deck, 8)
     hand.show()
 
