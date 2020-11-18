@@ -103,7 +103,7 @@ class Hand:
         self.cards = []
         self.active_card = None
         self.give_cards()
-        self.first_pos = [MARGIN, HEIGHT - Card.card_size[1] - 20]
+        self.first_pos = [MARGIN, HEIGHT - Card.card_size[1] - BORDER]
     
     def clicked_on(self, card):        
         [i.click() for i in self.cards if i.active==True]
@@ -166,7 +166,7 @@ class Pile(Card):
     def draw(self):
         Card.draw(self)
         if self.cards:
-            self.cards[-1].set_pos([self.x, self.y + Card.card_size[1] + 20])
+            self.cards[-1].set_pos([self.x, self.y + Card.card_size[1] + BORDER])
             self.cards[-1].draw()
 
     def __str__(self):
@@ -181,7 +181,7 @@ class Piles(Hand):
         self.cards = []
         for rule in rules:
             self.cards.append(Pile(rule))
-        self.first_pos = [MARGIN, 20]
+        self.first_pos = [WIDTH/2 - Card.card_size[1]*self.num/2, BORDER]
 
 
 def check_pile_1(pile, card_hand):
@@ -223,3 +223,6 @@ def logic(pile, hand, insert: bool):
         hand.replace()
     return pile, hand
 
+def copyright():
+    textsurface = italic.render('Francesco Vigni - 2020', True, (255, 255, 255))
+    screen.blit(textsurface,(5,HEIGHT-25))
