@@ -1,5 +1,9 @@
 import pygame
 import random
+from game.constants import *
+
+
+print('')
 
 
 class Card:
@@ -198,19 +202,19 @@ def check_available_moves(piles, hand):
     pass
 
 
-def logic(pile, hand_card, insert: bool):
+def logic(pile, hand, insert: bool):
     valid = False
     if pile.num == 1:
         # logic for pile 1
-        if check_pile_1(pile, hand_card):
+        if check_pile_1(pile, hand.active_card):
             if insert == True:
-                pile.insert(hand_card)   
+                pile.insert(hand.active_card)   
             valid = True
     elif pile.num == 100:
         # logic for pile 100
-        if check_pile_100(pile, hand_card):
+        if check_pile_100(pile, hand.active_card):
             if insert == True:
-                pile.insert(hand_card)  
+                pile.insert(hand.active_card)  
             valid = True    
         
     # insert card in choosen pile
@@ -219,64 +223,3 @@ def logic(pile, hand_card, insert: bool):
         hand.replace()
     return pile, hand
 
-
-if __name__ == "__main__":
-    import time
-    import random
-    import sys
-    sys.path.insert(1, '.')
-    folder = './images/'
-
-
-    random.seed(2)
-
-    WIDTH=600
-    HEIGHT=600
-    MARGIN = 60
-
-    pygame.init()
-
-
-    screen = pygame.display.set_mode( (WIDTH, HEIGHT ) )
-    pygame.display.set_caption('The Game')
-    background = pygame.Color("darkgreen")
-    screen.fill(background)
-    myfont = pygame.font.SysFont('Comic Sans MS', 30)
-
-
-    deck = Deck(randomize=False)
-    hand = Hand(deck, 8)
-    hand.show()
-
-    piles = Piles(deck)
-    piles.show()
-
-    clock = pygame.time.Clock()
-    pygame.display.update()
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                for card in hand.cards:
-                    if card.collidepoint(x,y):
-                        # select a card from the hand
-                        hand.clicked_on(card)
-
-                for pile in piles.cards:
-                    if pile.collidepoint(x, y):
-                        # select a card from the piles
-                        piles.clicked_on(pile)
-                        if hand.active_card:
-                            # valid game
-                            logic(pile, hand.active_card, insert=True)
-                # print(piles)
-                # update graphic
-                print('')
-                piles.show()
-                hand.show()
-                pygame.display.update()
-                clock.tick(60)
-
-
-    pygame.quit()
