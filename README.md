@@ -14,7 +14,7 @@ Python implementation of The Game by Steffen Benndorf
 Tested with Python 3.7.7
 
 ```python
-python /src/main.py
+python main.py
 ```
 
 ## Todo
