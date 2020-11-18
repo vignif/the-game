@@ -1,7 +1,14 @@
 # The Game
 Python implementation of The Game by Steffen Benndorf
 
+## The game window
+![img](utils/game.png)
+
+---
+## Class diagram
 ![img](utils/UML.png)
+
+---
 
 ## How to run
 Tested with Python 3.7.7
