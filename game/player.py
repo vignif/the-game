@@ -229,6 +229,6 @@ def copyright():
 
 def cards_in_deck(deck):
     l = len(deck)
-    textsurface = italic.render("{0}".format(l), True, (255, 255, 255))
+    textsurface = italic.render("Cards in deck: {0}".format(l), True, (255, 255, 255))
     screen.blit(textsurface,(5,HEIGHT/2))
 
