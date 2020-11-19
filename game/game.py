@@ -2,7 +2,7 @@ import time
 import random
 import sys
 import pygame
-from game.player import Deck, Hand, Piles, logic, copyright, cards_in_deck
+from game.player import Deck, Hand, Piles, logic, copyright, cards_in_deck, check_available_moves
 from game.constants import *
 sys.path.insert(1, '.')
 
@@ -46,6 +46,7 @@ class Game:
                     self.piles.show()
                     self.hand.show()
                     copyright()
+                    check_available_moves(self.piles, self.hand)
                     pygame.display.update()
                     self.clock.tick(60)
                 if event.type == pygame.QUIT:

@@ -199,7 +199,19 @@ def check_pile_100(pile, card_hand):
 
 
 def check_available_moves(piles, hand):
-    pass
+    moves = 0
+    for pile_card in piles.cards:
+        #print(pile_card.value)
+        for card in hand.cards:
+         #   print(card)
+            if pile_card.num == 1:
+                if(check_pile_1(pile_card, card)):
+                    moves += 1
+            if pile_card.num == 100:
+                if(check_pile_100(pile_card, card)):
+                    moves += 1
+    textsurface = italic.render("Available moves: {0}".format(moves), True, (255, 255, 255))
+    screen.blit(textsurface,(5,HEIGHT/2 + 40))
 
 
 def logic(pile, hand, insert: bool):
