@@ -212,6 +212,7 @@ def check_available_moves(piles, hand):
                     moves += 1
     textsurface = italic.render("Available moves: {0}".format(moves), True, (255, 255, 255))
     screen.blit(textsurface,(5,HEIGHT/2 + 40))
+    return moves
 
 
 def logic(pile, hand, insert: bool):
