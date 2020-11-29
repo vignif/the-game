@@ -15,10 +15,6 @@ Cards appended on the piles _hundred_ [100] need to decrease in value or has the
 ![img](utils/game.png)
 
 ---
-## Class diagram
-![img](utils/UML.png)
-
----
 
 ## How to run
 Tested with Python 3.7.7
